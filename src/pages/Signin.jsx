@@ -5,7 +5,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export const Signin = () => {
-
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const {
@@ -14,7 +13,7 @@ export const Signin = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => { 
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/dashboard");
@@ -35,7 +34,9 @@ export const Signin = () => {
     } catch (error) {
       if (error.response) {
         console.log(error.response.data);
-        setError(error.response.data.error || "An error occurred. Please try again.");
+        setError(
+          error.response.data.error || "An error occurred. Please try again."
+        );
       }
     }
   };

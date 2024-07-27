@@ -4,14 +4,14 @@ import { Image } from "../components/Image";
 import { useEffect } from "react";
 
 export const Signup = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  useEffect(() => { 
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/dashboard");
@@ -44,9 +44,7 @@ export const Signup = () => {
               required: "Name is required",
             })}
           />
-          {errors.name && (
-            <p className="text-red-500">{errors.name.message}</p>
-          )}
+          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
           <label htmlFor="email">Email</label>
           <input
             id="email"

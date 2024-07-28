@@ -13,8 +13,15 @@ export const Signup = () => {
   } = useForm();
 
   useEffect(() => {
-    if (getme()) navigate("/dashboard");
-  }, []);
+    const checkAuth = async () => {
+      const isAuthenticated = await getme();
+      if (isAuthenticated) {
+        navigate("/dashboard");
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
   const onSubmit = (data) => {
     console.log(data);
   };

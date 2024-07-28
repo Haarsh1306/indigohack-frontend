@@ -8,9 +8,16 @@ export const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!getme()) navigate("/signin");
-  }, []);
-  
+    const checkAuth = async () => {
+      const isAuthenticated = await getme();
+      if (!isAuthenticated) {
+        navigate("/signin");
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
+
   const getFlight = async () => {
     const result = await axios.get("http://localhost:3000/api/v1/flight");
     console.log(result.data);

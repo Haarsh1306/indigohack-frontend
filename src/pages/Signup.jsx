@@ -1,12 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Image } from "../components/Image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getme } from "../utils/getme";
 import axios from "axios";
+import { Loader } from "../components/Loader";
 
 export const Signup = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -26,15 +30,22 @@ export const Signup = () => {
 
   const onSubmit = async (data) => {
     try {
+      setIsButtonLoading(true);
+      setError("");
       const res = await axios.post(
         "http://localhost:3000/api/v1/user/signup",
         data
       );
 
       if (res.data.message) {
+        setIsButtonLoading(false);
         navigate("/verify-otp");
       }
     } catch (error) {
+      setError(
+        error.response.data.error || "An error occurred. Please try again."
+      );
+      setIsButtonLoading(false);
       console.error("Error signing up:", error);
     }
   };
@@ -101,11 +112,12 @@ export const Signup = () => {
             <p className="text-red-500">{errors.password.message}</p>
           )}
 
+          {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
-            className="bg-black text-white p-2 my-2 rounded-lg hover:bg-gray-900"
+            className="bg-black text-white p-2 my-2 rounded-lg flex justify-center hover:bg-gray-900"
           >
-            Sign Up
+            {isButtonLoading ? <Loader /> : "Sign Up"}
           </button>
 
           <Link to="/signin" className="underline mt-2">

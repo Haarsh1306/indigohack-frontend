@@ -4,11 +4,13 @@ import { Image } from "../components/Image";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getme } from "../utils/getme";
-import { useDispatch} from 'react-redux';
+import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
+import { Loader } from "../components/Loader";
 
 export const Signin = () => {
   const [error, setError] = useState("");
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -30,6 +32,7 @@ export const Signin = () => {
 
   const onSubmit = async (data) => {
     try {
+      setIsButtonLoading(true);
       const res = await axios.post(
         "http://localhost:3000/api/v1/user/signin",
         data
@@ -38,21 +41,33 @@ export const Signin = () => {
       const token = res.data.token;
       localStorage.setItem("token", token);
 
-      dispatch(setUser({userId: res.data.userId, userEmail: res.data.userEmail}));
+      setIsButtonLoading(false);
+      dispatch(
+        setUser({
+          userId: res.data.userId,
+          userEmail: res.data.userEmail,
+          userName: res.data.userName,
+        })
+      );
 
       navigate("/dashboard");
     } catch (error) {
+      if (error.response.data.isVerified === false) {
+        dispatch(
+          setUser({
+            userId: error.response.data.userId,
+            userEmail: error.response.data.userEmail,
+            userName: error.response.data.userName,
+          })
+        );
 
-      if(error.response.data.isVerified === false) {
-        dispatch(setUser({userId: error.response.data.userId, userEmail: error.response.data.userEmail}));
+        setIsButtonLoading(false);
         navigate("/verify-otp");
-      }
-
-      else if (error.response) {
-        console.log(error.response.data);
+      } else if (error.response) {
         setError(
           error.response.data.error || "An error occurred. Please try again."
         );
+        setIsButtonLoading(false);
       }
     }
   };
@@ -109,9 +124,10 @@ export const Signin = () => {
           {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
-            className="bg-black text-white p-2 my-2 rounded-lg hover:bg-gray-900"
+            className="bg-black text-white p-2 my-2 rounded-lg hover:bg-gray-900 flex justify-center items-center"
+            s
           >
-            Sign In
+            {isButtonLoading ? <Loader /> : "Sign In"}
           </button>
 
           <Link to="/signup" className="underline mt-2">

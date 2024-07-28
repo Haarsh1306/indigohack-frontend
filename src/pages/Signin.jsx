@@ -4,10 +4,13 @@ import { Image } from "../components/Image";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getme } from "../utils/getme";
+import { useDispatch} from 'react-redux';
+import { setUser } from "../redux/userSlice";
 
 export const Signin = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -35,9 +38,17 @@ export const Signin = () => {
       const token = res.data.token;
       localStorage.setItem("token", token);
 
+      dispatch(setUser({userId: res.data.userId, userEmail: res.data.userEmail}));
+
       navigate("/dashboard");
     } catch (error) {
-      if (error.response) {
+
+      if(error.response.data.isVerified === false) {
+        dispatch(setUser({userId: error.response.data.userId, userEmail: error.response.data.userEmail}));
+        navigate("/verify-otp");
+      }
+
+      else if (error.response) {
         console.log(error.response.data);
         setError(
           error.response.data.error || "An error occurred. Please try again."

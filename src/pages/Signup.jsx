@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Image } from "../components/Image";
 import { useEffect } from "react";
 import { getme } from "../utils/getme";
+import axios from "axios";
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -22,8 +23,20 @@ export const Signup = () => {
 
     checkAuth();
   }, [navigate]);
-  const onSubmit = (data) => {
-    console.log(data);
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/user/signup",
+        data
+      );
+
+      if (res.data.message) {
+        navigate("/verify-otp");
+      }
+    } catch (error) {
+      console.error("Error signing up:", error);
+    }
   };
 
   return (

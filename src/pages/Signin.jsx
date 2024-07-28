@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Image } from "../components/Image";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { getme } from "../utils/getme";
 
 export const Signin = () => {
   const [error, setError] = useState("");
@@ -14,10 +15,7 @@ export const Signin = () => {
   } = useForm();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/dashboard");
-    }
+    if (getme()) navigate("/dashboard");
   }, []);
 
   const onSubmit = async (data) => {

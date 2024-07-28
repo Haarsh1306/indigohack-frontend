@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Image } from "../components/Image";
 import { useEffect } from "react";
+import { getme } from "../utils/getme";
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -12,10 +13,7 @@ export const Signup = () => {
   } = useForm();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/dashboard");
-    }
+    if (getme()) navigate("/dashboard");
   }, []);
   const onSubmit = (data) => {
     console.log(data);

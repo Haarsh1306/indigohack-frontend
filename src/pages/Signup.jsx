@@ -5,11 +5,14 @@ import { useEffect, useState } from "react";
 import { getme } from "../utils/getme";
 import axios from "axios";
 import { Loader } from "../components/Loader";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/userSlice";
 
 export const Signup = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isButtonLoading, setIsButtonLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -38,7 +41,15 @@ export const Signup = () => {
       );
 
       if (res.data.message) {
+
         setIsButtonLoading(false);
+        dispatch(
+          setUser({
+            userId: res.data.userId,
+            userEmail: res.data.userEmail,
+            userName: res.data.userName,
+          })
+        );
         navigate("/verify-otp");
       }
     } catch (error) {
@@ -46,7 +57,6 @@ export const Signup = () => {
         error.response.data.error || "An error occurred. Please try again."
       );
       setIsButtonLoading(false);
-      console.error("Error signing up:", error);
     }
   };
 

@@ -18,7 +18,7 @@ export const Table = ({ data }) => {
             <th className="py-3 px-4 text-left">Actual Departure</th>
             <th className="py-3 px-4 text-left">Scheduled Arrival</th>
             <th className="py-3 px-4 text-left">Actual Arrival</th>
-            <th className="py-3 px-4 text-left">Actions</th>
+            <th className="py-3 px-4 text-left">Email Alert</th>
           </tr>
         </thead>
         <tbody>
@@ -35,7 +35,7 @@ export const Table = ({ data }) => {
               <td className="py-3 px-4 text-left">{flight.actual_departure ? formatDate(flight.actual_departure): "N/A"}</td>
               <td className="py-3 px-4 text-left whitespace-nowrap">{formatDate(flight.scheduled_arrival)}</td>
               <td className="py-3 px-4 text-left">{flight.actual_arrival ? formatDate(flight.actual_arrival) : "N/A"}</td>
-              <td className="py-3 px-4 text-left"><button className='bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600'>Notification</button></td>
+              <td className="py-3 px-4 text-left"><button className='bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600'>Subscribe</button></td>
             </tr>
           ))}
         </tbody>

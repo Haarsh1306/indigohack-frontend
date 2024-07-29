@@ -4,7 +4,6 @@ import { selectUserName } from "../redux/userSlice";
 import { useEffect, useRef, useState } from "react";
 import { ProfilePopUp } from "./ProfilePopUp";
 
-
 export const Appbar = () => {
   const [popUpFlag, setPopUpFlag] = useState(false);
   const handlePopUp = () => {
@@ -13,10 +12,7 @@ export const Appbar = () => {
 
   const divRef = useRef();
   const name = useSelector(selectUserName);
-  useEffect(() => {
-    console.log("Appbar rendered");
-    console.log(name);
-  }, []);
+  useEffect(() => {}, []);
   return (
     <div className="bg-gray-600 flex justify-between items-center py-2 px-4">
       <div className="text-xl text-white font-semibold">
@@ -27,7 +23,9 @@ export const Appbar = () => {
           <Avatar name={name.slice(0, 1)} />
         </button>
       </div>
-      {popUpFlag && <ProfilePopUp closePopUp={setPopUpFlag} parentRef={divRef}/>}
+      {popUpFlag && (
+        <ProfilePopUp closePopUp={setPopUpFlag} parentRef={divRef} />
+      )}
     </div>
   );
 };

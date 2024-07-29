@@ -1,3 +1,5 @@
+import axios from "axios";
+import { he } from "date-fns/locale";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -23,14 +25,41 @@ export const UpdateModal = ({ isOpen, onClose, data }) => {
     }
   }, [data, setValue]);
 
-  const onSubmit = (formData) => {
-    console.log("Submitted Data:", formData);
+  const onSubmit = async (formData) => {
+    let newData = {};
+    if (formData.status === "On Time" || formData.status === "Cancelled") {
+      newData = {
+        status: formData.status,
+        departure_gate: formData.departure_gate,
+        arrival_gate: formData.arrival_gate,
+      };
+    } else {
+      newData = {
+        status: formData.status,
+        departure_gate: formData.departure_gate,
+        arrival_gate: formData.arrival_gate,
+        scheduled_departure: formData.scheduled_departure,
+        scheduled_arrival: formData.scheduled_arrival,
+      };
+    }
+
+    const token = localStorage.getItem("token");
+    const res = await axios.put(
+      `http://localhost:3000/api/v1/flight/update/${formData.flight_id}`,
+      newData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(res.data);
     onClose();
   };
 
-  // Watch the status field to enable/disable the date fields
   const currentStatus = watch("status", "On Time");
-  const isDisabled = currentStatus === "On Time" || currentStatus === "Cancelled";
+  const isDisabled =
+    currentStatus === "On Time" || currentStatus === "Cancelled";
 
   return (
     <div

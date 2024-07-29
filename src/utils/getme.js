@@ -10,6 +10,7 @@ export const getme = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
+ 
     return {
       success: result.data.message ? true : false,
       data: result.data

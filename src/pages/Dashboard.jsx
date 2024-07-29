@@ -5,7 +5,8 @@ import { getme } from "../utils/getme";
 import { Table } from "../components/Table";
 import { Loader } from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUserId, setUser } from "../redux/userSlice";
+import { selectUserId, selectUserName, setUser } from "../redux/userSlice";
+import { Appbar } from "../components/Appbar";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ export const Dashboard = () => {
       if (!isAuthenticated) {
         navigate("/signin");
       } else {
+        
         dispatch(
           setUser({
             userId: data.userId,
@@ -36,7 +38,9 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (userId) {
+      
       getSubscriptionList();
+      
     }
   }, [userId]);
 
@@ -45,7 +49,14 @@ export const Dashboard = () => {
   }, []);
 
   const getFlight = async () => {
-    const result = await axios.get("http://localhost:3000/api/v1/flight");
+    const token = localStorage.getItem("token");
+    const result = await axios.get("http://localhost:3000/api/v1/flight",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     setFlightData(result.data);
     
   };
@@ -98,12 +109,15 @@ export const Dashboard = () => {
       <Loader />
     </div>
   ) : (
-    <div className="bg-black p-10">
-      <Table
-        data={flightData}
-        onClick={onClick}
-        subscriptionList={subscriptionList}
-      />
+    <div className="bg-black">
+      <Appbar />
+      <div className="p-10">
+        <Table
+          data={flightData}
+          onClick={onClick}
+          subscriptionList={subscriptionList}
+        />
+      </div>
     </div>
   );
 };

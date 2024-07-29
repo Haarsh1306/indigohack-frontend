@@ -71,7 +71,7 @@ export const Table = ({ data, onClick, subscriptionList }) => {
                   onClick={() => onClick(flight.flight_id)}
                   className={
                     subscriptionList.includes(flight.flight_id)
-                      ? "bg-gray-300 text-white rounded-md p-2 cursor-not-allowed"
+                      ? "bg-black text-white rounded-md p-2 cursor-not-allowed"
                       : "bg-red-500 text-white rounded-md p-2 hover:bg-red-600"
                   }
                 >

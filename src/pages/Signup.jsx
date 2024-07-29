@@ -117,7 +117,7 @@ export const Signup = () => {
             type="submit"
             className="bg-black text-white p-2 my-2 rounded-lg flex justify-center hover:bg-gray-900"
           >
-            {isButtonLoading ? <Loader /> : "Sign Up"}
+            {isButtonLoading ? <Loader size="sm" /> : "Sign Up"}
           </button>
 
           <Link to="/signin" className="underline mt-2">

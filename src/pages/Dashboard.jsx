@@ -1,13 +1,15 @@
 import axios from "axios";
-import { get } from "mongoose";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getme } from "../utils/getme";
 import { Table } from "../components/Table";
+import { Loader } from "../components/Loader";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [flightData, setFlightData] = useState([]);
+  const [isPageLoading, setPageLoading] = useState(true);
+
   useEffect(() => {
     const checkAuth = async () => {
       const isAuthenticated = await getme();
@@ -23,6 +25,7 @@ export const Dashboard = () => {
     const result = await axios.get("http://localhost:3000/api/v1/flight");
     console.log(result.data);
     setFlightData(result.data);
+    setPageLoading(false);
   };
 
   useEffect(() => {
@@ -30,8 +33,12 @@ export const Dashboard = () => {
   }, []);
 
   return (
-    <div className="bg-black p-10">
-      <Table data={flightData} />
-    </div>
+    isPageLoading ? (
+      <div className="h-screen flex justify-center items-center bg-black"><Loader /></div>
+    ) : (
+      <div className="bg-black p-10">
+        <Table data={flightData} />
+      </div>
+    )
   );
 };

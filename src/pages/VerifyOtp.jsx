@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Loader } from "../components/Loader";
 import { Image } from "../components/Image";
 import { resetVerifyOtpPage, selectVerifyOtpPage } from "../redux/verifyOtpSlice";
+import { toast } from "react-toastify";
 
 export const VerifyOtp = () => {
   const [error, setError] = useState("");
@@ -39,7 +40,8 @@ export const VerifyOtp = () => {
       if (res.data.isVerified) {
         setIsButtonLoading(false);
         dispatch(resetVerifyOtpPage)
-        navigate("/dashboard");
+        toast.success("OTP verified successfully, Please Log in");
+        navigate("/signin");
       }
     } catch (error) {
       setError(

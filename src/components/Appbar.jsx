@@ -1,14 +1,17 @@
 import { useSelector } from "react-redux";
 import { Avatar } from "./Avatar";
 import { selectUserName } from "../redux/userSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProfilePopUp } from "./ProfilePopUp";
+
 
 export const Appbar = () => {
   const [popUpFlag, setPopUpFlag] = useState(false);
   const handlePopUp = () => {
     setPopUpFlag(!popUpFlag);
   };
+
+  const divRef = useRef();
   const name = useSelector(selectUserName);
   useEffect(() => {
     console.log("Appbar rendered");
@@ -19,12 +22,12 @@ export const Appbar = () => {
       <div className="text-xl text-white font-semibold">
         Real Time Flight Update
       </div>
-      <div>
+      <div ref={divRef}>
         <button type="button" onClick={handlePopUp}>
           <Avatar name={name.slice(0, 1)} />
         </button>
       </div>
-      {popUpFlag && <ProfilePopUp closePopUp={setPopUpFlag} />}
+      {popUpFlag && <ProfilePopUp closePopUp={setPopUpFlag} parentRef={divRef}/>}
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { clearUser, selectUserEmail, selectUserName } from "../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-export const ProfilePopUp = ({ closePopUp }) => {
+export const ProfilePopUp = ({ closePopUp, parentRef }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const name = useSelector(selectUserName);
@@ -18,7 +18,10 @@ export const ProfilePopUp = ({ closePopUp }) => {
   };
 
   const handleClickOutside = (event) => {
-    if (popUpRef.current && !popUpRef.current.contains(event.target)) {
+    
+    if (parentRef.current && parentRef.current.contains(event.target)) {
+      return;
+    } else if (popUpRef.current && !popUpRef.current.contains(event.target)) {
       closePopUp();
     }
   };
@@ -33,7 +36,7 @@ export const ProfilePopUp = ({ closePopUp }) => {
   return (
     <div
       ref={popUpRef}
-      className="absolute right-10 z-10 mt-40 w-56 origin-top-right rounded-md bg-black shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+      className="absolute right-10 z-10 mt-40 w-56 origin-top-right rounded-md bg-blue-500 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="menu-button"

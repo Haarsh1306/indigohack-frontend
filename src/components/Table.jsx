@@ -1,9 +1,21 @@
 import { format, parseISO } from "date-fns";
+import { UpdateModal } from "./UpdateModal";
+import { useState } from "react";
+
 export const Table = ({ data, onClick, subscriptionList, role }) => {
+  const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
+  const [selectedFlight, setSelectedFlight] = useState(null);
+
+  const handleUpdateModal = (flight) => {
+    setSelectedFlight(flight);
+    setUpdateModalOpen(true);
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     return format(parseISO(dateString), "MMM d, yyyy HH:mm");
   };
+
   return (
     <div className="">
       <table className="w-full border-collapse bg-white">
@@ -18,7 +30,9 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
             <th className="py-3 px-4 text-left">Actual Departure</th>
             <th className="py-3 px-4 text-left">Scheduled Arrival</th>
             <th className="py-3 px-4 text-left">Actual Arrival</th>
-            <th className="py-3 px-4 text-left">{role=="user"?"Email Alert":"Action"}</th>
+            <th className="py-3 px-4 text-left">
+              {role === "user" ? "Email Alert" : "Action"}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -26,27 +40,21 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
             <tr key={index} className="border-b border-muted">
               <td className="py-3 px-4 text-left">{flight.flight_id}</td>
               <td className="py-3 px-4 text-left">{flight.airline}</td>
-              {flight.status === "Delayed" && (
-                <td className="py-4 px-4 text-left">
-                  <span className="bg-yellow-500 whitespace-nowrap text-white px-2 py-1 rounded-md">
-                    {flight.status}
-                  </span>
-                </td>
-              )}
-              {flight.status === "On Time" && (
-                <td className="py-4 px-4 text-left">
-                  <span className="bg-green-500 whitespace-nowrap text-white px-2 py-1 rounded-md">
-                    {flight.status}
-                  </span>
-                </td>
-              )}
-              {flight.status === "Cancelled" && (
-                <td className="py-4 px-4 text-left">
-                  <span className="bg-red-500 whitespace-nowrap text-white px-2 py-1 rounded-md">
-                    {flight.status}
-                  </span>
-                </td>
-              )}
+              <td className="py-4 px-4 text-left">
+                <span
+                  className={`whitespace-nowrap text-white px-2 py-1 rounded-md ${
+                    flight.status === "Delayed"
+                      ? "bg-yellow-500"
+                      : flight.status === "On Time"
+                      ? "bg-green-500"
+                      : flight.status === "Cancelled"
+                      ? "bg-red-500"
+                      : ""
+                  }`}
+                >
+                  {flight.status}
+                </span>
+              </td>
               <td className="py-3 px-4 text-left">{flight.departure_gate}</td>
               <td className="py-3 px-4 text-left">{flight.arrival_gate}</td>
               <td className="py-3 px-4 text-left">
@@ -66,7 +74,7 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
                   : "N/A"}
               </td>
               <td className="py-3 px-4 text-left">
-                {role == "user" && (
+                {role === "user" && (
                   <button
                     disabled={subscriptionList.includes(flight.flight_id)}
                     onClick={() => onClick(flight.flight_id)}
@@ -82,10 +90,9 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
                   </button>
                 )}
 
-                {role == "admin" && (
+                {role === "admin" && (
                   <button
-                    disabled={subscriptionList.includes(flight.flight_id)}
-                    onClick={() => onClick(flight.flight_id)}
+                    onClick={() => handleUpdateModal(flight)}
                     className="bg-red-500 text-white rounded-md p-2 hover:bg-red-600"
                   >
                     Update
@@ -96,6 +103,11 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
           ))}
         </tbody>
       </table>
+      <UpdateModal
+        isOpen={isUpdateModalOpen}
+        onClose={() => setUpdateModalOpen(false)}
+        data={selectedFlight}
+      />
     </div>
   );
 };
@@ -104,5 +116,5 @@ Table.defaultProps = {
   data: [],
   onClick: () => {},
   subscriptionList: [],
-  role: 'user',
+  role: "user",
 };

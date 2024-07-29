@@ -55,7 +55,7 @@ export const Admin = () => {
         console.log("harsgh")
       }
   return isPageLoading ? (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen bg-black">
         <Loader />
     </div>
   ) : (

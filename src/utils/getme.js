@@ -1,19 +1,23 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const getme = async () => {
   try {
-    const token = localStorage.getItem("token");
-    if (!token) return false; 
+    const token = localStorage.getItem('token');
+    if (!token) return { success: false, data: null }; 
 
-    const result = await axios.get("http://localhost:3000/api/v1/getme", {
+    const result = await axios.get('http://localhost:3000/api/v1/getme', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-
-    return result.data.message ? true : false;
+    return {
+      success: result.data.message ? true : false,
+      data: result.data
+    };
   } catch (error) {
-    console.error('Error fetching /getme:', error);
-    return false;
+    return {
+      success: false,
+      data: null
+    };
   }
 };

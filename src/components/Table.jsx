@@ -1,8 +1,8 @@
-import { format, parseISO } from 'date-fns';
-export const Table = ({ data }) => {
+import { format, parseISO } from "date-fns";
+export const Table = ({ data, onClick, subscriptionList }) => {
   const formatDate = (dateString) => {
-    if (!dateString) return '-';
-    return format(parseISO(dateString), 'MMM d, yyyy HH:mm');
+    if (!dateString) return "-";
+    return format(parseISO(dateString), "MMM d, yyyy HH:mm");
   };
   return (
     <div className="">
@@ -26,16 +26,60 @@ export const Table = ({ data }) => {
             <tr key={index} className="border-b border-muted">
               <td className="py-3 px-4 text-left">{flight.flight_id}</td>
               <td className="py-3 px-4 text-left">{flight.airline}</td>
-              {flight.status === "Delayed" && (<td className="py-4 px-4 text-left"><span className="bg-yellow-500 whitespace-nowrap text-white px-2 py-1 rounded-md">{flight.status}</span></td>)}
-              {flight.status === "On Time" && (<td className="py-4 px-4 text-left"><span className="bg-green-500 whitespace-nowrap text-white px-2 py-1 rounded-md">{flight.status}</span></td>)}
-              {flight.status === "Cancelled" && (<td className="py-4 px-4 text-left"><span className="bg-red-500 whitespace-nowrap text-white px-2 py-1 rounded-md">{flight.status}</span></td>)}
+              {flight.status === "Delayed" && (
+                <td className="py-4 px-4 text-left">
+                  <span className="bg-yellow-500 whitespace-nowrap text-white px-2 py-1 rounded-md">
+                    {flight.status}
+                  </span>
+                </td>
+              )}
+              {flight.status === "On Time" && (
+                <td className="py-4 px-4 text-left">
+                  <span className="bg-green-500 whitespace-nowrap text-white px-2 py-1 rounded-md">
+                    {flight.status}
+                  </span>
+                </td>
+              )}
+              {flight.status === "Cancelled" && (
+                <td className="py-4 px-4 text-left">
+                  <span className="bg-red-500 whitespace-nowrap text-white px-2 py-1 rounded-md">
+                    {flight.status}
+                  </span>
+                </td>
+              )}
               <td className="py-3 px-4 text-left">{flight.departure_gate}</td>
               <td className="py-3 px-4 text-left">{flight.arrival_gate}</td>
-              <td className="py-3 px-4 text-left">{formatDate(flight.scheduled_departure)}</td>
-              <td className="py-3 px-4 text-left">{flight.actual_departure ? formatDate(flight.actual_departure): "N/A"}</td>
-              <td className="py-3 px-4 text-left whitespace-nowrap">{formatDate(flight.scheduled_arrival)}</td>
-              <td className="py-3 px-4 text-left">{flight.actual_arrival ? formatDate(flight.actual_arrival) : "N/A"}</td>
-              <td className="py-3 px-4 text-left"><button className='bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600'>Subscribe</button></td>
+              <td className="py-3 px-4 text-left">
+                {formatDate(flight.scheduled_departure)}
+              </td>
+              <td className="py-3 px-4 text-left">
+                {flight.actual_departure
+                  ? formatDate(flight.actual_departure)
+                  : "N/A"}
+              </td>
+              <td className="py-3 px-4 text-left whitespace-nowrap">
+                {formatDate(flight.scheduled_arrival)}
+              </td>
+              <td className="py-3 px-4 text-left">
+                {flight.actual_arrival
+                  ? formatDate(flight.actual_arrival)
+                  : "N/A"}
+              </td>
+              <td className="py-3 px-4 text-left">
+                <button
+                  disabled = {subscriptionList.includes(flight.flight_id)}
+                  onClick={() => onClick(flight.flight_id)}
+                  className={
+                    subscriptionList.includes(flight.flight_id)
+                      ? "bg-gray-300 text-white rounded-md p-2 cursor-not-allowed"
+                      : "bg-red-500 text-white rounded-md p-2 hover:bg-red-600"
+                  }
+                >
+                  {subscriptionList.includes(flight.flight_id)
+                    ? "Subscribed"
+                    : "Subscribe"}
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

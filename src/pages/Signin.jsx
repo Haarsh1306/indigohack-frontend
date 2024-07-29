@@ -31,7 +31,7 @@ export const Signin = () => {
     checkAuth();
     dispatch(resetVerifyOtpPage)
   }, [navigate]);
-
+ 
   const onSubmit = async (data) => {
     try {
       setIsButtonLoading(true);
@@ -51,7 +51,7 @@ export const Signin = () => {
           userName: res.data.userName,
         })
       );
-
+      
       navigate("/dashboard");
     } catch (error) {
       if (error.response.data.isVerified === false) {

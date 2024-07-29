@@ -1,16 +1,18 @@
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { selectUserEmail } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "../components/Loader";
 import { Image } from "../components/Image";
+import { resetVerifyOtpPage, selectVerifyOtpPage } from "../redux/verifyOtpSlice";
 
 export const VerifyOtp = () => {
   const [error, setError] = useState("");
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();  
   const {
     register,
     handleSubmit,
@@ -18,7 +20,10 @@ export const VerifyOtp = () => {
   } = useForm();
 
   const userEmail = useSelector(selectUserEmail);
-
+  const verifyOtpPage = useSelector(selectVerifyOtpPage);
+  useEffect(() => {
+    if (!verifyOtpPage) navigate("/signup");
+  });
   const onSubmit = async (data) => {
     try {
       const payload = {
@@ -33,6 +38,7 @@ export const VerifyOtp = () => {
       );
       if (res.data.isVerified) {
         setIsButtonLoading(false);
+        dispatch(resetVerifyOtpPage)
         navigate("/dashboard");
       }
     } catch (error) {

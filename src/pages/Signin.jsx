@@ -7,6 +7,7 @@ import { getme } from "../utils/getme";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 import { Loader } from "../components/Loader";
+import { resetVerifyOtpPage, setVerifyOtpPage } from "../redux/verifyOtpSlice";
 
 export const Signin = () => {
   const [error, setError] = useState("");
@@ -28,6 +29,7 @@ export const Signin = () => {
     };
 
     checkAuth();
+    dispatch(resetVerifyOtpPage)
   }, [navigate]);
 
   const onSubmit = async (data) => {
@@ -62,6 +64,7 @@ export const Signin = () => {
         );
 
         setIsButtonLoading(false);
+        dispatch(setVerifyOtpPage());
         navigate("/verify-otp");
       } else if (error.response) {
         setError(

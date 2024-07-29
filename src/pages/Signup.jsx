@@ -7,6 +7,7 @@ import axios from "axios";
 import { Loader } from "../components/Loader";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
+import { resetVerifyOtpPage, setVerifyOtpPage } from "../redux/verifyOtpSlice";
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ export const Signup = () => {
     };
 
     checkAuth();
+    dispatch(resetVerifyOtpPage)
   }, [navigate]);
 
   const onSubmit = async (data) => {
@@ -50,6 +52,7 @@ export const Signup = () => {
             userName: res.data.userName,
           })
         );
+        dispatch(setVerifyOtpPage());
         navigate("/verify-otp");
       }
     } catch (error) {

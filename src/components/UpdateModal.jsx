@@ -2,6 +2,7 @@ import axios from "axios";
 import { he } from "date-fns/locale";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export const UpdateModal = ({ isOpen, onClose, data }) => {
   const { register, handleSubmit, setValue, watch } = useForm();
@@ -44,16 +45,22 @@ export const UpdateModal = ({ isOpen, onClose, data }) => {
     }
 
     const token = localStorage.getItem("token");
-    const res = await axios.put(
-      `http://localhost:3000/api/v1/flight/update/${formData.flight_id}`,
-      newData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(res.data);
+    try{
+        const res = await axios.put(
+            `http://localhost:3000/api/v1/flight/update/${formData.flight_id}`,
+            newData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if(res.data.message){
+              toast.success("Flight details updated successfully");
+          }
+    }catch(error){
+        console.log(error)
+    }
     onClose();
   };
 

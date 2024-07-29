@@ -42,16 +42,16 @@ export const ProfilePopUp = ({ closePopUp, parentRef }) => {
       aria-labelledby="menu-button"
     >
       <div className="py-1" role="none">
-        <span className="block w-full px-4 py-2 text-left text-sm text-white">
+        <span className="block w-full px-4 py-2 text-left text-sm text-white hover:bg-blue-700">
           {name}
         </span>
-        <span className="block w-full px-4 py-2 text-left text-sm text-white">
+        <span className="block w-full px-4 py-2 text-left text-sm text-white hover:bg-blue-700">
           {email}
         </span>
         <button
           onClick={handleSignOut}
           type="button"
-          className="block w-full px-4 py-2 text-left text-sm text-white"
+          className="block w-full px-4 py-2 text-left text-sm text-white hover:bg-blue-700"
         >
           Sign out
         </button>

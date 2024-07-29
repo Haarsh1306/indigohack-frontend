@@ -116,6 +116,7 @@ export const Dashboard = () => {
           data={flightData}
           onClick={onClick}
           subscriptionList={subscriptionList}
+          role="user"
         />
       </div>
     </div>

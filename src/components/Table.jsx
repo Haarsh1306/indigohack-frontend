@@ -1,5 +1,5 @@
 import { format, parseISO } from "date-fns";
-export const Table = ({ data, onClick, subscriptionList }) => {
+export const Table = ({ data, onClick, subscriptionList, role }) => {
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     return format(parseISO(dateString), "MMM d, yyyy HH:mm");
@@ -18,7 +18,7 @@ export const Table = ({ data, onClick, subscriptionList }) => {
             <th className="py-3 px-4 text-left">Actual Departure</th>
             <th className="py-3 px-4 text-left">Scheduled Arrival</th>
             <th className="py-3 px-4 text-left">Actual Arrival</th>
-            <th className="py-3 px-4 text-left">Email Alert</th>
+            <th className="py-3 px-4 text-left">{role=="user"?"Email Alert":"Action"}</th>
           </tr>
         </thead>
         <tbody>
@@ -66,19 +66,31 @@ export const Table = ({ data, onClick, subscriptionList }) => {
                   : "N/A"}
               </td>
               <td className="py-3 px-4 text-left">
-                <button
-                  disabled = {subscriptionList.includes(flight.flight_id)}
-                  onClick={() => onClick(flight.flight_id)}
-                  className={
-                    subscriptionList.includes(flight.flight_id)
-                      ? "bg-black text-white rounded-md p-2 cursor-not-allowed"
-                      : "bg-red-500 text-white rounded-md p-2 hover:bg-red-600"
-                  }
-                >
-                  {subscriptionList.includes(flight.flight_id)
-                    ? "Subscribed"
-                    : "Subscribe"}
-                </button>
+                {role == "user" && (
+                  <button
+                    disabled={subscriptionList.includes(flight.flight_id)}
+                    onClick={() => onClick(flight.flight_id)}
+                    className={
+                      subscriptionList.includes(flight.flight_id)
+                        ? "bg-black text-white rounded-md p-2 cursor-not-allowed"
+                        : "bg-red-500 text-white rounded-md p-2 hover:bg-red-600"
+                    }
+                  >
+                    {subscriptionList.includes(flight.flight_id)
+                      ? "Subscribed"
+                      : "Subscribe"}
+                  </button>
+                )}
+
+                {role == "admin" && (
+                  <button
+                    disabled={subscriptionList.includes(flight.flight_id)}
+                    onClick={() => onClick(flight.flight_id)}
+                    className="bg-red-500 text-white rounded-md p-2 hover:bg-red-600"
+                  >
+                    Update
+                  </button>
+                )}
               </td>
             </tr>
           ))}
@@ -86,4 +98,11 @@ export const Table = ({ data, onClick, subscriptionList }) => {
       </table>
     </div>
   );
+};
+
+Table.defaultProps = {
+  data: [],
+  onClick: () => {},
+  subscriptionList: [],
+  role: 'user',
 };

@@ -6,6 +6,7 @@ import { VerifyOtp } from "./pages/VerifyOtp";
 import { Dashboard } from "./pages/Dashboard";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { Admin } from "./pages/Admin";
 function App() {
   return (
     <>
@@ -17,6 +18,8 @@ function App() {
           <Route path="/verify-otp" element={<VerifyOtp />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin" element={<Admin />} />
+
         </Routes>
         <ToastContainer
           position="bottom-center"

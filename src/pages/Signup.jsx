@@ -13,6 +13,7 @@ export const Signup = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isButtonLoading, setIsButtonLoading] = useState(false);
+  const [isPageLoading, setPageLoading] = useState(true);
   const dispatch = useDispatch();
 
   const {
@@ -23,14 +24,15 @@ export const Signup = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const isAuthenticated = await getme();
+      const isAuthenticated = (await getme()).success;
       if (isAuthenticated) {
         navigate("/dashboard");
       }
+      setPageLoading(false);
     };
 
     checkAuth();
-    dispatch(resetVerifyOtpPage)
+    dispatch(resetVerifyOtpPage);
   }, [navigate]);
 
   const onSubmit = async (data) => {
@@ -43,7 +45,6 @@ export const Signup = () => {
       );
 
       if (res.data.message) {
-
         setIsButtonLoading(false);
         dispatch(
           setUser({
@@ -63,7 +64,11 @@ export const Signup = () => {
     }
   };
 
-  return (
+  return isPageLoading ? (
+    <div className="bg-black flex justify-center items-center h-screen">
+      <Loader size="lg" />
+    </div>
+  ) : (
     <div className="grid md:grid-cols-2 items-center">
       <div className="hidden md:block">
         <Image />

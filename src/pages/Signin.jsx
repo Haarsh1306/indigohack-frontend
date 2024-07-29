@@ -12,6 +12,7 @@ import { resetVerifyOtpPage, setVerifyOtpPage } from "../redux/verifyOtpSlice";
 export const Signin = () => {
   const [error, setError] = useState("");
   const [isButtonLoading, setIsButtonLoading] = useState(false);
+  const [isPageLoading, setPageLoading] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -22,16 +23,17 @@ export const Signin = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const isAuthenticated = await getme();
+      const isAuthenticated = (await getme()).success;
       if (isAuthenticated) {
         navigate("/dashboard");
       }
+      setPageLoading(false);
     };
 
     checkAuth();
-    dispatch(resetVerifyOtpPage)
+    dispatch(resetVerifyOtpPage);
   }, [navigate]);
- 
+
   const onSubmit = async (data) => {
     try {
       setIsButtonLoading(true);
@@ -51,7 +53,7 @@ export const Signin = () => {
           userName: res.data.userName,
         })
       );
-      
+
       navigate("/dashboard");
     } catch (error) {
       if (error.response.data.isVerified === false) {
@@ -75,7 +77,11 @@ export const Signin = () => {
     }
   };
 
-  return (
+  return isPageLoading ? (
+    <div className="bg-black flex justify-center items-center h-screen">
+      <Loader size="lg" />
+    </div>
+  ) : (
     <div className="grid md:grid-cols-2 items-center">
       <div className="hidden md:block">
         <Image />
@@ -128,7 +134,6 @@ export const Signin = () => {
           <button
             type="submit"
             className="bg-black text-white p-2 my-2 rounded-lg hover:bg-gray-900 flex justify-center items-center"
-            
           >
             {isButtonLoading ? <Loader size="sm" /> : "Sign In"}
           </button>

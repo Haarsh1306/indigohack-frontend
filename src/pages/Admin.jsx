@@ -71,6 +71,7 @@ export const Admin = () => {
           data={flightData}
           onClick={onClick}
           role="admin"
+          setFlightData={setFlightData}
         />
       </div>
     </div>

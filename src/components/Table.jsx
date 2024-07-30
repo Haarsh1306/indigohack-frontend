@@ -2,7 +2,7 @@ import { format, parseISO } from "date-fns";
 import { UpdateModal } from "./UpdateModal";
 import { useState, useMemo } from "react";
 
-export const Table = ({ data, onClick, subscriptionList, role }) => {
+export const Table = ({ data, onClick, subscriptionList, role, setFlightData }) => {
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [selectedFlight, setSelectedFlight] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -247,6 +247,7 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
         isOpen={isUpdateModalOpen}
         onClose={() => setUpdateModalOpen(false)}
         data={selectedFlight}
+        setFlightData={setFlightData}
       />
     </div>
   );
@@ -284,6 +285,7 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
 Table.defaultProps = {
   data: [],
   onClick: () => {},
+  setFlightData: () => {},
   subscriptionList: [],
   role: "user",
 };

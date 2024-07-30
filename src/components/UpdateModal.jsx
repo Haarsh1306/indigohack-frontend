@@ -1,10 +1,9 @@
 import axios from "axios";
-import { he } from "date-fns/locale";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-export const UpdateModal = ({ isOpen, onClose, data }) => {
+export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
   const { register, handleSubmit, setValue, watch } = useForm();
   const [status, setStatus] = useState(data?.status || "On Time");
 
@@ -57,6 +56,13 @@ export const UpdateModal = ({ isOpen, onClose, data }) => {
           );
           if(res.data.message){
               toast.success("Flight details updated successfully");
+              setFlightData((prevData) =>
+                prevData.map((flight) =>
+                  flight.flight_id === formData.flight_id
+                    ? { ...flight, ...newData }
+                    : flight
+                )
+              );
           }
     }catch(error){
         console.log(error)

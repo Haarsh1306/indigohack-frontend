@@ -46,25 +46,11 @@ export const Signin = () => {
       localStorage.setItem("token", token);
 
       setIsButtonLoading(false);
-      dispatch(
-        setUser({
-          userId: res.data.userId,
-          userEmail: res.data.userEmail,
-          userName: res.data.userName,
-        })
-      );
 
       navigate("/dashboard");
     } catch (error) {
       if (error.response.data.isVerified === false) {
-        dispatch(
-          setUser({
-            userId: error.response.data.userId,
-            userEmail: error.response.data.userEmail,
-            userName: error.response.data.userName,
-          })
-        );
-
+      
         setIsButtonLoading(false);
         dispatch(setVerifyOtpPage());
         navigate("/verify-otp");

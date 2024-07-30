@@ -29,24 +29,25 @@ export const Dashboard = () => {
             userId: data.userId,
             userEmail: data.userEmail,
             userName: data.userName,
+            userRole: data.userRole,
           })
         );
       }
     };
     checkAuth();
-  }, [navigate]);
-
-  useEffect(() => {
-    if (userId) {
-      
-      getSubscriptionList();
-      
-    }
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     getFlight();
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      getSubscriptionList();
+    }
+  }, [userId]);
+
+  
 
   const getFlight = async () => {
     const token = localStorage.getItem("token");
@@ -78,6 +79,7 @@ export const Dashboard = () => {
         setPageLoading(false);
       }
     } catch (error) {
+      console.log(error);
       setPageLoading(false);
     }
   };

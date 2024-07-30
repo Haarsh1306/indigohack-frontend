@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { clearUser, selectUserEmail, selectUserName } from "../redux/userSlice";
+import { clearUser, selectUserEmail, selectUserName, selectUserRole } from "../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export const ProfilePopUp = ({ closePopUp, parentRef }) => {
@@ -8,6 +8,7 @@ export const ProfilePopUp = ({ closePopUp, parentRef }) => {
   const dispatch = useDispatch();
   const name = useSelector(selectUserName);
   const email = useSelector(selectUserEmail);
+  const role = useSelector(selectUserRole);
 
   const popUpRef = useRef(null);
 
@@ -27,6 +28,8 @@ export const ProfilePopUp = ({ closePopUp, parentRef }) => {
   };
 
   useEffect(() => {
+    console.log(role);
+    console.log(name);
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -43,7 +46,7 @@ export const ProfilePopUp = ({ closePopUp, parentRef }) => {
     >
       <div className="py-1" role="none">
         <span className="block w-full px-4 py-2 text-left text-sm text-white hover:bg-blue-700">
-          {name}
+          {name} {role=="admin" ? "(Admin)" : ""}
         </span>
         <span className="block w-full px-4 py-2 text-left text-sm text-white hover:bg-blue-700">
           {email}

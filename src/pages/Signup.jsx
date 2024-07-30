@@ -46,13 +46,6 @@ export const Signup = () => {
 
       if (res.data.message) {
         setIsButtonLoading(false);
-        dispatch(
-          setUser({
-            userId: res.data.userId,
-            userEmail: res.data.userEmail,
-            userName: res.data.userName,
-          })
-        );
         dispatch(setVerifyOtpPage());
         navigate("/verify-otp");
       }

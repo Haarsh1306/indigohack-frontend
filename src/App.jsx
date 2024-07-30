@@ -19,6 +19,8 @@ function App() {
           <Route path="/verify-otp" element={<VerifyOtp />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/unauthorized" element={<Error message="403 Forbidden" />} />
           <Route path="/*" element={<Error message="404 Not Found" />} />
         </Routes>
         <ToastContainer

@@ -21,18 +21,23 @@ export const Admin = () => {
           if (!isAuthenticated) {
             navigate("/signin");
           } else {
-            
+          
+            if(data.userRole !== "admin"){
+              navigate("/unauthorized");
+            }
             dispatch(
               setUser({
                 userId: data.userId,
                 userEmail: data.userEmail,
                 userName: data.userName,
+                userRole: data.userRole,
               })
             );
+
           }
         };
         checkAuth();
-      }, [navigate]);
+      }, []);
 
       useEffect(() => {
         getFlight();

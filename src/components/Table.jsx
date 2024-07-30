@@ -1,10 +1,11 @@
 import { format, parseISO } from "date-fns";
 import { UpdateModal } from "./UpdateModal";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 export const Table = ({ data, onClick, subscriptionList, role }) => {
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [selectedFlight, setSelectedFlight] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleUpdateModal = (flight) => {
     setSelectedFlight(flight);
@@ -16,8 +17,28 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
     return format(parseISO(dateString), "MMM d, yyyy HH:mm");
   };
 
+  const filteredData = useMemo(() => {
+    return data.filter(
+      (flight) =>
+        flight.flight_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        flight.airline.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [data, searchTerm]);
+
   return (
     <div className="w-full">
+      {/* Search input */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by Flight ID or Airline"
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      {/* Table for large screen */}
       <div
         className={
           isUpdateModalOpen
@@ -61,7 +82,7 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {data.map((flight, index) => (
+            {filteredData.map((flight, index) => (
               <tr key={index}>
                 <td className="px-4 py-4 whitespace-nowrap text-sm">
                   {flight.flight_id}
@@ -115,7 +136,7 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
         </table>
       </div>
 
-      {/* Small screen */}
+      {/* For Small Screen */}
       <div
         className={
           isUpdateModalOpen
@@ -123,7 +144,7 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
             : "md:hidden space-y-4"
         }
       >
-        {data.map((flight, index) => (
+        {filteredData.map((flight, index) => (
           <div
             key={index}
             className="bg-white shadow overflow-hidden sm:rounded-lg"

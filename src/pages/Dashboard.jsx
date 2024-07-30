@@ -109,7 +109,7 @@ export const Dashboard = () => {
       <Loader />
     </div>
   ) : (
-    <div className="bg-black">
+    <div className="bg-black min-h-screen">
       <Appbar />
       <div className="p-10">
         <Table

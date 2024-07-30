@@ -9,71 +9,59 @@ import { setUser } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
 
 export const Admin = () => {
-    const [isPageLoading, setPageLoading] = useState(true);
-    const [flightData, setFlightData] = useState([]);
-    const navigate = useNavigate(); 
-    const dispatch = useDispatch();
+  const [isPageLoading, setPageLoading] = useState(true);
+  const [flightData, setFlightData] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        const checkAuth = async () => {
-          const isAuthenticated = (await getme()).success;
-          const data = (await getme()).data;
-          if (!isAuthenticated) {
-            navigate("/signin");
-          } else {
-          
-            if(data.userRole !== "admin"){
-              navigate("/unauthorized");
-            }
-            dispatch(
-              setUser({
-                userId: data.userId,
-                userEmail: data.userEmail,
-                userName: data.userName,
-                userRole: data.userRole,
-              })
-            );
-
-          }
-        };
-        checkAuth();
-      }, []);
-
-      useEffect(() => {
-        getFlight();
-      }, []);
-
-    const getFlight = async () => {
-        const token = localStorage.getItem("token");
-        const result = await axios.get("http://localhost:3000/api/v1/flight",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isAuthenticated = (await getme()).success;
+      const data = (await getme()).data;
+      if (!isAuthenticated) {
+        navigate("/signin");
+      } else {
+        if (data.userRole !== "admin") {
+          navigate("/unauthorized");
+        }
+        dispatch(
+          setUser({
+            userId: data.userId,
+            userEmail: data.userEmail,
+            userName: data.userName,
+            userRole: data.userRole,
+          })
         );
-        setFlightData(result.data);
-        setPageLoading(false);
-      };
-
-      const onClick = () =>{
-        console.log("harsgh")
       }
+    };
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    getFlight();
+  }, []);
+
+  const getFlight = async () => {
+    const token = localStorage.getItem("token");
+    const result = await axios.get("http://localhost:3000/api/v1/flight", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setFlightData(result.data);
+    setPageLoading(false);
+  };
+
   return isPageLoading ? (
     <div className="flex justify-center items-center h-screen bg-black">
-        <Loader />
+      <Loader />
     </div>
   ) : (
     <div className="bg-black min-h-screen">
       <Appbar />
       <div className="p-10">
-        <Table
-          data={flightData}
-          onClick={onClick}
-          role="admin"
-          setFlightData={setFlightData}
-        />
+        <Table data={flightData} role="admin" setFlightData={setFlightData} />
       </div>
     </div>
-  );    
-}
+  );
+};

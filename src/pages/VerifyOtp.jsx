@@ -6,14 +6,17 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Loader } from "../components/Loader";
 import { Image } from "../components/Image";
-import { resetVerifyOtpPage, selectVerifyOtpPage } from "../redux/verifyOtpSlice";
+import {
+  resetVerifyOtpPage,
+  selectVerifyOtpPage,
+} from "../redux/verifyOtpSlice";
 import { toast } from "react-toastify";
 
 export const VerifyOtp = () => {
   const [error, setError] = useState("");
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -22,9 +25,7 @@ export const VerifyOtp = () => {
 
   const userEmail = useSelector(selectUserEmail);
   const verifyOtpPage = useSelector(selectVerifyOtpPage);
-  useEffect(() => {
-    if (!verifyOtpPage) navigate("/signup");
-  });
+
   const onSubmit = async (data) => {
     try {
       const payload = {
@@ -39,7 +40,7 @@ export const VerifyOtp = () => {
       );
       if (res.data.isVerified) {
         setIsButtonLoading(false);
-        dispatch(resetVerifyOtpPage)
+        dispatch(resetVerifyOtpPage);
         toast.success("OTP verified successfully, Please Log in");
         navigate("/signin");
       }
@@ -50,6 +51,10 @@ export const VerifyOtp = () => {
       setIsButtonLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!verifyOtpPage) navigate("/signup");
+  });
 
   return (
     <div className="grid md:grid-cols-2 items-center">

@@ -16,50 +16,14 @@ export const Dashboard = () => {
   const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const isAuthenticated = (await getme()).success;
-      const data = (await getme()).data;
-      if (!isAuthenticated) {
-        navigate("/signin");
-      } else {
-        
-        dispatch(
-          setUser({
-            userId: data.userId,
-            userEmail: data.userEmail,
-            userName: data.userName,
-            userRole: data.userRole,
-          })
-        );
-      }
-    };
-    checkAuth();
-  }, []);
-
-  useEffect(() => {
-    getFlight();
-  }, []);
-
-  useEffect(() => {
-    if (userId) {
-      getSubscriptionList();
-    }
-  }, [userId]);
-
-  
-
   const getFlight = async () => {
     const token = localStorage.getItem("token");
-    const result = await axios.get("http://localhost:3000/api/v1/flight",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const result = await axios.get("http://localhost:3000/api/v1/flight", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     setFlightData(result.data);
-    
   };
 
   const getSubscriptionList = async () => {
@@ -105,6 +69,36 @@ export const Dashboard = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isAuthenticated = (await getme()).success;
+      const data = (await getme()).data;
+      if (!isAuthenticated) {
+        navigate("/signin");
+      } else {
+        dispatch(
+          setUser({
+            userId: data.userId,
+            userEmail: data.userEmail,
+            userName: data.userName,
+            userRole: data.userRole,
+          })
+        );
+      }
+    };
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    getFlight();
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      getSubscriptionList();
+    }
+  }, [userId]);
 
   return isPageLoading ? (
     <div className="h-screen flex justify-center items-center bg-black">

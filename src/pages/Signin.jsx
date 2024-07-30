@@ -8,33 +8,20 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 import { Loader } from "../components/Loader";
 import { resetVerifyOtpPage, setVerifyOtpPage } from "../redux/verifyOtpSlice";
-import { set } from "date-fns";
 
 export const Signin = () => {
   const [error, setError] = useState("");
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [isPageLoading, setPageLoading] = useState(true);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const isAuthenticated = (await getme()).success;
-      if (isAuthenticated) {
-        navigate("/dashboard");
-      }
-      setPageLoading(false);
-    };
-
-    checkAuth();
-    dispatch(resetVerifyOtpPage);
-  }, [navigate]);
   const handlePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
   };
@@ -80,6 +67,19 @@ export const Signin = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isAuthenticated = (await getme()).success;
+      if (isAuthenticated) {
+        navigate("/dashboard");
+      }
+      setPageLoading(false);
+    };
+
+    checkAuth();
+    dispatch(resetVerifyOtpPage);
+  }, [navigate]);
 
   return isPageLoading ? (
     <div className="bg-black flex justify-center items-center h-screen">

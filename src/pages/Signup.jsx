@@ -15,29 +15,16 @@ export const Signup = () => {
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [isPageLoading, setPageLoading] = useState(true);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const dispatch = useDispatch();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const dispatch = useDispatch();
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
   };
-  useEffect(() => {
-    const checkAuth = async () => {
-      const isAuthenticated = (await getme()).success;
-      if (isAuthenticated) {
-        navigate("/dashboard");
-      }
-      setPageLoading(false);
-    };
-
-    checkAuth();
-    dispatch(resetVerifyOtpPage);
-  }, [navigate]);
 
   const onSubmit = async (data) => {
     try {
@@ -68,6 +55,19 @@ export const Signup = () => {
       setIsButtonLoading(false);
     }
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isAuthenticated = (await getme()).success;
+      if (isAuthenticated) {
+        navigate("/dashboard");
+      }
+      setPageLoading(false);
+    };
+
+    checkAuth();
+    dispatch(resetVerifyOtpPage);
+  }, [navigate]);
 
   return isPageLoading ? (
     <div className="bg-black flex justify-center items-center h-screen">

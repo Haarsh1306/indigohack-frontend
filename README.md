@@ -9,6 +9,8 @@ This is the frontend for the Indigo Hack To Hire 2024 project. Users can sign in
 - [Usage](#usage)
 - [Components](#components)
 - [Routes](#routes)
+- [Project Screenshots](#project-screenshots)
+
 
 ## Project Overview
 

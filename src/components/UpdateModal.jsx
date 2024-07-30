@@ -7,24 +7,6 @@ export const UpdateModal = ({ isOpen, onClose, data, setFlightData }) => {
   const { register, handleSubmit, setValue, watch } = useForm();
   const [status, setStatus] = useState(data?.status || "On Time");
 
-  useEffect(() => {
-    const formatDate = (dateString) => {
-      if (!dateString) return "";
-      const date = new Date(dateString);
-      return date.toISOString().slice(0, 16);
-    };
-
-    if (data) {
-      setValue("flight_id", data.flight_id);
-      setValue("status", data.status || "On Time");
-      setValue("departure_gate", data.departure_gate || "");
-      setValue("arrival_gate", data.arrival_gate || "");
-      setValue("scheduled_departure", formatDate(data.scheduled_departure));
-      setValue("scheduled_arrival", formatDate(data.scheduled_arrival));
-      setStatus(data.status || "On Time");
-    }
-  }, [data, setValue]);
-
   const onSubmit = async (formData) => {
     let newData = {};
     if (formData.status === "On Time" || formData.status === "Cancelled") {
@@ -74,6 +56,24 @@ export const UpdateModal = ({ isOpen, onClose, data, setFlightData }) => {
   const isDisabled =
     currentStatus === "On Time" || currentStatus === "Cancelled";
   const isDisabledGate = currentStatus === "Cancelled";
+
+  useEffect(() => {
+    const formatDate = (dateString) => {
+      if (!dateString) return "";
+      const date = new Date(dateString);
+      return date.toISOString().slice(0, 16);
+    };
+
+    if (data) {
+      setValue("flight_id", data.flight_id);
+      setValue("status", data.status || "On Time");
+      setValue("departure_gate", data.departure_gate || "");
+      setValue("arrival_gate", data.arrival_gate || "");
+      setValue("scheduled_departure", formatDate(data.scheduled_departure));
+      setValue("scheduled_arrival", formatDate(data.scheduled_arrival));
+      setStatus(data.status || "On Time");
+    }
+  }, [data, setValue]);
 
   return (
     <div

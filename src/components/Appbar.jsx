@@ -6,13 +6,13 @@ import { ProfilePopUp } from "./ProfilePopUp";
 
 export const Appbar = () => {
   const [popUpFlag, setPopUpFlag] = useState(false);
+  const divRef = useRef();
+  const name = useSelector(selectUserName);
+
   const handlePopUp = () => {
     setPopUpFlag(!popUpFlag);
   };
 
-  const divRef = useRef();
-  const name = useSelector(selectUserName);
-  const role = useSelector(selectUserRole);
   useEffect(() => {}, []);
   return (
     <div className="bg-gray-600 flex justify-between items-center py-2 px-4">

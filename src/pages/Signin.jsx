@@ -8,11 +8,13 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 import { Loader } from "../components/Loader";
 import { resetVerifyOtpPage, setVerifyOtpPage } from "../redux/verifyOtpSlice";
+import { set } from "date-fns";
 
 export const Signin = () => {
   const [error, setError] = useState("");
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [isPageLoading, setPageLoading] = useState(true);
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -33,6 +35,9 @@ export const Signin = () => {
     checkAuth();
     dispatch(resetVerifyOtpPage);
   }, [navigate]);
+  const handlePasswordVisibility = () => {
+    setPasswordVisible(!isPasswordVisible);
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -46,11 +51,24 @@ export const Signin = () => {
       localStorage.setItem("token", token);
 
       setIsButtonLoading(false);
+      dispatch(
+        setUser({
+          userId: res.data.userId,
+          userEmail: res.data.userEmail,
+          userName: res.data.userName,
+        })
+      );
 
       navigate("/dashboard");
     } catch (error) {
       if (error.response.data.isVerified === false) {
-      
+        dispatch(
+          setUser({
+            userId: error.response.data.userId,
+            userEmail: error.response.data.userEmail,
+            userName: error.response.data.userName,
+          })
+        );
         setIsButtonLoading(false);
         dispatch(setVerifyOtpPage());
         navigate("/verify-otp");
@@ -99,20 +117,28 @@ export const Signin = () => {
           )}
 
           <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="********"
-            className="border border-gray-400 p-2 my-2 rounded-lg"
-            {...register("password", {
-              required: "Password is required",
-              minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters long",
-              },
-            })}
-          />
+          <div className="relative">
+            <input
+              id="password"
+              name="password"
+              type={isPasswordVisible ? "text" : "password"}
+              placeholder="********"
+              className="border border-gray-400 p-2 my-2 rounded-lg w-full"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters long",
+                },
+              })}
+            />
+            <i
+              className={`bx ${
+                isPasswordVisible ? "bx-show" : "bx-hide"
+              } absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl`}
+              onClick={handlePasswordVisibility}
+            ></i>
+          </div>
           {errors.password && (
             <p className="text-red-500">{errors.password.message}</p>
           )}

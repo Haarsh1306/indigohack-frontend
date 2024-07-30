@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Admin } from "./pages/Admin";
 import { Error } from "./pages/Error";
+import 'boxicons/css/boxicons.min.css';
 function App() {
   return (
     <>

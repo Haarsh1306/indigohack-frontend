@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
+export const UpdateModal = ({ isOpen, onClose, data, setFlightData }) => {
   const { register, handleSubmit, setValue, watch } = useForm();
   const [status, setStatus] = useState(data?.status || "On Time");
 
@@ -44,28 +44,28 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
     }
 
     const token = localStorage.getItem("token");
-    try{
-        const res = await axios.put(
-            `http://localhost:3000/api/v1/flight/update/${formData.flight_id}`,
-            newData,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          if(res.data.message){
-              toast.success("Flight details updated successfully");
-              setFlightData((prevData) =>
-                prevData.map((flight) =>
-                  flight.flight_id === formData.flight_id
-                    ? { ...flight, ...newData }
-                    : flight
-                )
-              );
-          }
-    }catch(error){
-        console.log(error)
+    try {
+      const res = await axios.put(
+        `http://localhost:3000/api/v1/flight/update/${formData.flight_id}`,
+        newData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.data.message) {
+        toast.success("Flight details updated successfully");
+        setFlightData((prevData) =>
+          prevData.map((flight) =>
+            flight.flight_id === formData.flight_id
+              ? { ...flight, ...newData }
+              : flight
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
     onClose();
   };
@@ -73,6 +73,7 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
   const currentStatus = watch("status", "On Time");
   const isDisabled =
     currentStatus === "On Time" || currentStatus === "Cancelled";
+  const isDisabledGate = currentStatus === "Cancelled";
 
   return (
     <div
@@ -90,7 +91,7 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
             </h3>
             <button
               type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-gray-400 bg-transparent hover:bg-gray-600 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
               onClick={onClose}
             >
               <span className="sr-only">Close modal</span>
@@ -103,7 +104,7 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
               <div className="col-span-2">
                 <label
                   htmlFor="flight_id"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Flight ID
                 </label>
@@ -113,13 +114,13 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
                   name="flight_id"
                   id="flight_id"
                   {...register("flight_id")}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className="bg-gray-600 border border-gray-500 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 opacity-50 cursor-not-allowed"
                 />
               </div>
               <div className="col-span-2">
                 <label
                   htmlFor="status"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Status
                 </label>
@@ -127,7 +128,7 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
                   id="status"
                   name="status"
                   {...register("status")}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className="bg-gray-600 border border-gray-500 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                 >
                   <option value="On Time">On Time</option>
                   <option value="Delayed">Delayed</option>
@@ -137,37 +138,43 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
               <div className="col-span-2 sm:col-span-1">
                 <label
                   htmlFor="departure_gate"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Departure Gate
                 </label>
                 <input
+                  disabled={isDisabledGate}
                   type="text"
                   name="departure_gate"
                   id="departure_gate"
                   {...register("departure_gate")}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className={`bg-gray-600 border border-gray-500 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ${
+                    isDisabledGate ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 />
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <label
                   htmlFor="arrival_gate"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Arrival Gate
                 </label>
                 <input
+                  disabled={isDisabledGate}
                   type="text"
                   name="arrival_gate"
                   id="arrival_gate"
                   {...register("arrival_gate")}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className={`bg-gray-600 border border-gray-500 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ${
+                    isDisabledGate ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 />
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <label
                   htmlFor="scheduled_departure"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Scheduled Departure
                 </label>
@@ -177,7 +184,7 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
                   id="scheduled_departure"
                   {...register("scheduled_departure")}
                   disabled={isDisabled}
-                  className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${
+                  className={`bg-gray-600 border border-gray-500 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ${
                     isDisabled ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 />
@@ -185,7 +192,7 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
               <div className="col-span-2 sm:col-span-1">
                 <label
                   htmlFor="scheduled_arrival"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Scheduled Arrival
                 </label>
@@ -195,7 +202,7 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
                   id="scheduled_arrival"
                   {...register("scheduled_arrival")}
                   disabled={isDisabled}
-                  className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${
+                  className={`bg-gray-600 border border-gray-500 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ${
                     isDisabled ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 />
@@ -203,7 +210,7 @@ export const UpdateModal = ({ isOpen, onClose, data , setFlightData}) => {
             </div>
             <button
               type="submit"
-              className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
             >
               Update
             </button>

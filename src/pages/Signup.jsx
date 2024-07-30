@@ -6,7 +6,6 @@ import { getme } from "../utils/getme";
 import axios from "axios";
 import { Loader } from "../components/Loader";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/userSlice";
 import { resetVerifyOtpPage, setVerifyOtpPage } from "../redux/verifyOtpSlice";
 
 export const Signup = () => {

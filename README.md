@@ -12,7 +12,7 @@ This is the frontend for the Indigo Hack To Hire 2024 project. Users can sign in
 
 ## Project Overview
 
-The application frontend is built using React, Tailwind CSS, and other modern web technologies. It provides a user-friendly interface for tracking flight statuses and subscribing to future updates.
+The application frontend is built using React, Tailwind CSS, Redux and other modern web technologies. It provides a user-friendly interface for tracking flight statuses and subscribing to future updates.
 
 ## Key Features
 

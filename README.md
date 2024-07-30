@@ -52,3 +52,36 @@ After installation, you can access the application through your web browser. Use
 - /signup - For new users to register with OTP verification
 - /dashboard - For users to view flight data and subscribe to notifications for any flight
 - /admin - For updating and changing flight data to simulate notifications
+
+## Project Screenshots
+- Signin page
+
+![Sign in page](./images/signin.png)
+
+- Signup page
+
+![Signup page](./images/signup.png)
+
+- Otp verify page
+
+![Verify otp page](./images/verify-otp.png)
+
+- Dashboard page
+
+![Dashboard page](./images/dashboard.png)
+
+- Admin Page
+
+![Admin page](./images/admin.png)
+
+- Update flight information
+
+![Update flight information](./images/update-flight-details.png)
+
+- Update email screenshot
+
+![Update email](./images/update-email.png)
+
+- Otp email screenshot
+
+![Otp email](./images/otp-email.png)

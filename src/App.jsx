@@ -5,8 +5,9 @@ import { Signup } from "./pages/Signup";
 import { VerifyOtp } from "./pages/VerifyOtp";
 import { Dashboard } from "./pages/Dashboard";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { Admin } from "./pages/Admin";
+import { Error } from "./pages/Error";
 function App() {
   return (
     <>
@@ -18,7 +19,7 @@ function App() {
           <Route path="/verify-otp" element={<VerifyOtp />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin" element={<Admin />} />
-
+          <Route path="/*" element={<Error message="404 Not Found" />} />
         </Routes>
         <ToastContainer
           position="bottom-center"

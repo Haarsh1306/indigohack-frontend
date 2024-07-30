@@ -17,92 +17,112 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
   };
 
   return (
-    <div className="">
-      <table className="w-full border-collapse bg-white">
-        <thead>
-          <tr className="bg-gray-200 text-gray-600">
-            <th className="py-3 px-4 text-left">Flight ID</th>
-            <th className="py-3 px-4 text-left">Airline</th>
-            <th className="py-3 px-4 text-left">Status</th>
-            <th className="py-3 px-4 text-left">Departure Gate</th>
-            <th className="py-3 px-4 text-left">Arrival Gate</th>
-            <th className="py-3 px-4 text-left">Scheduled Departure</th>
-            <th className="py-3 px-4 text-left">Actual Departure</th>
-            <th className="py-3 px-4 text-left">Scheduled Arrival</th>
-            <th className="py-3 px-4 text-left">Actual Arrival</th>
-            <th className="py-3 px-4 text-left">
-              {role === "user" ? "Email Alert" : "Action"}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((flight, index) => (
-            <tr key={index} className="border-b border-muted">
-              <td className="py-3 px-4 text-left">{flight.flight_id}</td>
-              <td className="py-3 px-4 text-left">{flight.airline}</td>
-              <td className="py-4 px-4 text-left">
-                <span
-                  className={`whitespace-nowrap text-white px-2 py-1 rounded-md ${
-                    flight.status === "Delayed"
-                      ? "bg-yellow-500"
-                      : flight.status === "On Time"
-                      ? "bg-green-500"
-                      : flight.status === "Cancelled"
-                      ? "bg-red-500"
-                      : ""
-                  }`}
-                >
-                  {flight.status}
-                </span>
-              </td>
-              <td className="py-3 px-4 text-left">{flight.departure_gate}</td>
-              <td className="py-3 px-4 text-left">{flight.arrival_gate}</td>
-              <td className="py-3 px-4 text-left">
-                {formatDate(flight.scheduled_departure)}
-              </td>
-              <td className="py-3 px-4 text-left">
-                {flight.actual_departure
-                  ? formatDate(flight.actual_departure)
-                  : "N/A"}
-              </td>
-              <td className="py-3 px-4 text-left whitespace-nowrap">
-                {formatDate(flight.scheduled_arrival)}
-              </td>
-              <td className="py-3 px-4 text-left">
-                {flight.actual_arrival
-                  ? formatDate(flight.actual_arrival)
-                  : "N/A"}
-              </td>
-              <td className="py-3 px-4 text-left">
-                {role === "user" && (
-                  <button
-                    disabled={subscriptionList.includes(flight.flight_id)}
-                    onClick={() => onClick(flight.flight_id)}
-                    className={
-                      subscriptionList.includes(flight.flight_id)
-                        ? "bg-black text-white rounded-md p-2 cursor-not-allowed"
-                        : "bg-red-500 text-white rounded-md p-2 hover:bg-red-600"
-                    }
-                  >
-                    {subscriptionList.includes(flight.flight_id)
-                      ? "Subscribed"
-                      : "Subscribe"}
-                  </button>
-                )}
-
-                {role === "admin" && (
-                  <button
-                    onClick={() => handleUpdateModal(flight)}
-                    className="bg-red-500 text-white rounded-md p-2 hover:bg-red-600"
-                  >
-                    Update
-                  </button>
-                )}
-              </td>
+    <div className="w-full">
+     
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full border-collapse bg-white min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-200">
+            <tr>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Flight ID</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Airline</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Departure Gate</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Arrival Gate</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Scheduled Departure</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Actual Departure</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Scheduled Arrival</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Actual Arrival</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                {role === "user" ? "Email Alert" : "Action"}
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {data.map((flight, index) => (
+              <tr key={index}>
+                <td className="px-4 py-4 whitespace-nowrap text-sm">{flight.flight_id}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm">{flight.airline}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm">
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    flight.status === "Delayed" ? "bg-yellow-100 text-yellow-800" :
+                    flight.status === "On Time" ? "bg-green-100 text-green-800" :
+                    flight.status === "Cancelled" ? "bg-red-100 text-red-800" : ""
+                  }`}>
+                    {flight.status}
+                  </span>
+                </td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm">{flight.departure_gate}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm">{flight.arrival_gate}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm">{formatDate(flight.scheduled_departure)}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm">{flight.actual_departure ? formatDate(flight.actual_departure) : "N/A"}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm">{formatDate(flight.scheduled_arrival)}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm">{flight.actual_arrival ? formatDate(flight.actual_arrival) : "N/A"}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm">
+                  {renderActionButton(flight, role)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="md:hidden space-y-4">
+        {data.map((flight, index) => (
+          <div key={index} className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="px-4 py-5 sm:px-6">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Flight ID: {flight.flight_id}</h3>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">Airline: {flight.airline}</p>
+            </div>
+            <div className="border-t border-gray-200">
+              <dl>
+                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Status</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      flight.status === "Delayed" ? "bg-yellow-100 text-yellow-800" :
+                      flight.status === "On Time" ? "bg-green-100 text-green-800" :
+                      flight.status === "Cancelled" ? "bg-red-100 text-red-800" : ""
+                    }`}>
+                      {flight.status}
+                    </span>
+                  </dd>
+                </div>
+                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Departure Gate</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{flight.departure_gate}</dd>
+                </div>
+                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Arrival Gate</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{flight.arrival_gate}</dd>
+                </div>
+                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Scheduled Departure</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{formatDate(flight.scheduled_departure)}</dd>
+                </div>
+                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Actual Departure</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{flight.actual_departure ? formatDate(flight.actual_departure) : "N/A"}</dd>
+                </div>
+                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Scheduled Arrival</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{formatDate(flight.scheduled_arrival)}</dd>
+                </div>
+                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Actual Arrival</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{flight.actual_arrival ? formatDate(flight.actual_arrival) : "N/A"}</dd>
+                </div>
+                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">{role === "user" ? "Email Alert" : "Action"}</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {renderActionButton(flight, role)}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <UpdateModal
         isOpen={isUpdateModalOpen}
         onClose={() => setUpdateModalOpen(false)}
@@ -110,6 +130,33 @@ export const Table = ({ data, onClick, subscriptionList, role }) => {
       />
     </div>
   );
+
+  function renderActionButton(flight, role) {
+    if (role === "user") {
+      return (
+        <button
+          disabled={subscriptionList.includes(flight.flight_id)}
+          onClick={() => onClick(flight.flight_id)}
+          className={`px-3 py-1 rounded-md text-sm font-medium ${
+            subscriptionList.includes(flight.flight_id)
+              ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+              : "bg-red-600 text-white hover:bg-red-700"
+          }`}
+        >
+          {subscriptionList.includes(flight.flight_id) ? "Subscribed" : "Subscribe"}
+        </button>
+      );
+    } else if (role === "admin") {
+      return (
+        <button
+          onClick={() => handleUpdateModal(flight)}
+          className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700"
+        >
+          Update
+        </button>
+      );
+    }
+  }
 };
 
 Table.defaultProps = {

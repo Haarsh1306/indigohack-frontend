@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Avatar } from "./Avatar";
-import { selectUserName, selectUserRole } from "../redux/userSlice";
+import { selectUserName} from "../redux/userSlice";
 import { useEffect, useRef, useState } from "react";
 import { ProfilePopUp } from "./ProfilePopUp";
 
@@ -8,7 +8,6 @@ export const Appbar = () => {
   const [popUpFlag, setPopUpFlag] = useState(false);
   const divRef = useRef();
   const name = useSelector(selectUserName);
-
   const handlePopUp = () => {
     setPopUpFlag(!popUpFlag);
   };

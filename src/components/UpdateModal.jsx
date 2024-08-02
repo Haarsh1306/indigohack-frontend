@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { backend_url } from "../../config";
 
 export const UpdateModal = ({ isOpen, onClose, data, setFlightData }) => {
   const { register, handleSubmit, setValue, watch } = useForm();
@@ -28,7 +29,7 @@ export const UpdateModal = ({ isOpen, onClose, data, setFlightData }) => {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.put(
-        `http://localhost:3000/api/v1/flight/update/${formData.flight_id}`,
+        `${backend_url}/api/v1/flight/update/${formData.flight_id}`,
         newData,
         {
           headers: {

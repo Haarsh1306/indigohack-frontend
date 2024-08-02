@@ -7,6 +7,7 @@ import { Loader } from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserId, selectUserName, setUser } from "../redux/userSlice";
 import { Appbar } from "../components/Appbar";
+import { backend_url } from "../../config";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export const Dashboard = () => {
 
   const getFlight = async () => {
     const token = localStorage.getItem("token");
-    const result = await axios.get("http://localhost:3000/api/v1/flight", {
+    const result = await axios.get(`${backend_url}/api/v1/flight`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -30,7 +31,7 @@ export const Dashboard = () => {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/flight/subscriptions/${userId}`,
+        `${backend_url}/api/v1/flight/subscriptions/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -53,7 +54,7 @@ export const Dashboard = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.post(
-        "http://localhost:3000/api/v1/flight/subscribe",
+        `${backend_url}/api/v1/flight/subscribe`,
         { user_id: userId, flight_id: flightId },
         {
           headers: {
@@ -88,7 +89,7 @@ export const Dashboard = () => {
       }
     };
     checkAuth();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     getFlight();

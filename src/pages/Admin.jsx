@@ -7,6 +7,7 @@ import { getme } from "../utils/getme";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
+import { backend_url } from "../../config";
 
 export const Admin = () => {
   const [isPageLoading, setPageLoading] = useState(true);
@@ -43,7 +44,9 @@ export const Admin = () => {
 
   const getFlight = async () => {
     const token = localStorage.getItem("token");
-    const result = await axios.get("http://localhost:3000/api/v1/flight", {
+    
+    
+    const result = await axios.get(`${backend_url}/api/v1/flight`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

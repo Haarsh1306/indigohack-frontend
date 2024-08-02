@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 import { Loader } from "../components/Loader";
 import { resetVerifyOtpPage, setVerifyOtpPage } from "../redux/verifyOtpSlice";
+import { backend_url } from "../../config";
 
 export const Signin = () => {
   const [error, setError] = useState("");
@@ -30,7 +31,7 @@ export const Signin = () => {
     try {
       setIsButtonLoading(true);
       const res = await axios.post(
-        "http://localhost:3000/api/v1/user/signin",
+        `${backend_url}/api/v1/user/signin`,
         data
       );
 

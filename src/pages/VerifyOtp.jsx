@@ -11,6 +11,7 @@ import {
   selectVerifyOtpPage,
 } from "../redux/verifyOtpSlice";
 import { toast } from "react-toastify";
+import { backend_url } from "../../config";
 
 export const VerifyOtp = () => {
   const [error, setError] = useState("");
@@ -35,7 +36,7 @@ export const VerifyOtp = () => {
       setIsButtonLoading(true);
       setError("");
       const res = await axios.post(
-        "http://localhost:3000/api/v1/user/verify-otp",
+      `${backend_url}/user/verify-otp`,
         payload
       );
       if (res.data.isVerified) {

@@ -29,7 +29,7 @@ export const UpdateModal = ({ isOpen, onClose, data, setFlightData }) => {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.put(
-        `${backend_url}/api/v1/flight/update/${formData.flight_id}`,
+        `${backend_url}/flight/update/${formData.flight_id}`,
         newData,
         {
           headers: {

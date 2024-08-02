@@ -19,7 +19,7 @@ export const Dashboard = () => {
 
   const getFlight = async () => {
     const token = localStorage.getItem("token");
-    const result = await axios.get(`${backend_url}/api/v1/flight`, {
+    const result = await axios.get(`${backend_url}/flight`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -31,7 +31,7 @@ export const Dashboard = () => {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.get(
-        `${backend_url}/api/v1/flight/subscriptions/${userId}`,
+        `${backend_url}/flight/subscriptions/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -54,7 +54,7 @@ export const Dashboard = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.post(
-        `${backend_url}/api/v1/flight/subscribe`,
+        `${backend_url}/flight/subscribe`,
         { user_id: userId, flight_id: flightId },
         {
           headers: {

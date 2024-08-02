@@ -6,7 +6,7 @@ export const getme = async () => {
     const token = localStorage.getItem('token');
     if (!token) return { success: false, data: null }; 
 
-    const result = await axios.get(`${backend_url}/api/v1/getme`, {
+    const result = await axios.get(`${backend_url}/getme`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

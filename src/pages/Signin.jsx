@@ -31,7 +31,7 @@ export const Signin = () => {
     try {
       setIsButtonLoading(true);
       const res = await axios.post(
-        `${backend_url}/api/v1/user/signin`,
+        `${backend_url}/signin`,
         data
       );
 

@@ -32,7 +32,7 @@ export const Signup = () => {
       setIsButtonLoading(true);
       setError("");
       const res = await axios.post(
-        `${backend_url}/api/v1/user/signup`,
+        `${backend_url}/user/signup`,
         data
       );
 

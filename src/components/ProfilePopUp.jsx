@@ -41,7 +41,7 @@ export const ProfilePopUp = ({ closePopUp, parentRef }) => {
   return (
     <div
       ref={popUpRef}
-      className="absolute right-10 z-10 mt-44 w-64 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+      className="absolute right-10 z-10 mt-20 w-64 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="menu-button"
